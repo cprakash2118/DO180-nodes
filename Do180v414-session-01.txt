@@ -1,3 +1,15 @@
+
+
+
+9:00am to 10:30 Session-01 
+10:30am to 10:45 Tea Break 
+10:45am to 1:00pm  Session-02
+1:00pm to 1:50pm - Lunch Break
+1:50pm to 3:30pm - Session-03 
+3:30pm to 3:50pm - Tea Break 
+3:50pm to 5:30pm - Session-04 (Last session -day) 
+
+
 https://github.com/cprakash2118/DO180-nodes
 
 ###Point-01-) Lab Access:-
@@ -12,7 +24,7 @@ ROL - RedHat Online Learning - https://rol.redhat.com [RH login ID]
   https://docs.redhat.com/en/documentation/openshift_container_platform/4.14/
 
 2.1-) Cloud services editions
- - "Red Hat OpenShift" Service on AWS     [ROSA - Platform=AWS;POC=Amazon]
+ - "Red Hat OpenShift" Service on AWS     [ROSA - Platform=AWS;POC=Amazon] - https://aws.amazon.com/rosa/
  - Microsoft Azure "Red Hat OpenShift"    [ARO  - Platform=Azure;POC=Microsoft]
  - "Red Hat OpenShift" Dedicated          [Dedicated - Platform=AWS/GCP;POC=RedHat]
  - "Red Hat OpenShift" on IBM Cloud       [OCP-IBM   - Platform=IBM;POC=IBM]
@@ -42,7 +54,72 @@ ROL - RedHat Online Learning - https://rol.redhat.com [RH login ID]
 ************** Reference Link for "MultiCloud Container Platform - End " **************
 
 
+###Point-03-) Classroom Environment:-
+-Users Details:-
+  Login to VMs/Servers:-
+   student/student [sudo access]
+   root/redhat 
+   
+   
+  Login to OCP cluster:- 
+  admin/redhatocp  [cluster-admin access ; same as root access w.r.t Linux OS]
+  developer/developer [Basic access]
+  FYI- both accounts are LDAP account.
+  
+  kubeadmin/kubeadmin-password-file [on utility, at location - /home/lab/ocp4/auth/{kubeadmin-password, kubeconfig]
+  FYI- This "kubeadmin" account created at the time of OCP cluster installation.
+  Note: 
+  - kubeadmin is not LDAP account as it's created at the time of OCP cluster deployment.
+  - When you are trying to login to OCP cluster always use "workstation" node.
+    $ oc login -u admin -p redhatocp https://api.ocp4.example.com:6443 
+	$ oc whoami 
+	$ oc get nodes
+	$ oc get clusterversion 
+	$ oc version 
 
+-Network/Domain details:-
+  Network Name                   Domain Name                    IP Range for Domain/Network
+  classroom Network              example.com                    172.25.252.0/24             
+  student Network                lab.example.com                172.25.250.0/24 
+  Cluster Network                ocp4.example.com               192.168.50.0/24 
+  
+  
+   $ oc login -u admin -p redhatocp https://api.ocp4.example.com:6443 
+   oc - OpenShift-client (same as kubecrl ; kubectl connect to kubernetes cluster)
+   FYI:-
+   - oc used for connect to OCP cluster via Rest API.
+   - login is API call, -u mean user, -p password, API URL=https://api.ocp4.example.com:6443 
+     Note: Login method via API URL.
+	 
+	 As per LAB (DO180v414):-
+	 API-URL =  https://api.ocp4.example.com:6443 
+	         =  https://api.clusterName.baseDomain:Default-Port 
+	 clusterName=ocp4 
+	 baseDomain=example.com 
+	 Default-Port=6443 
+	----------------------------------------------------------
+	 Eg:-
+	 baseDomain=nokia.com 
+	 
+	 clusterName=apac 
+	 clusterNetwork= apac.nokia.com 
+	 API-URL =  https://api.apac.nokia.com:6443 
+	 
+	 clusterName=na 
+	 API-URL =  https://api.na.nokia.com:6443 
+	 clusterNetwork= apac.na.com
+	 
+	 clusterName=emea
+     API-URL =  https://api.emea.nokia.com:6443 
+     clusterNetwork= apac.emea.com
+	 
+    $ oc login -u admin -p redhatocp API-URL 
+    $ oc login -u admin -p redhatocp https://api.apac.nokia.com:6443
+	$ oc login -u admin -p redhatocp https://api.na.nokia.com:6443
+	$ oc login -u admin -p redhatocp https://api.apac.emea.com:6443
 
-
-
+	 
+	 
+	 
+	 
+	 
