@@ -118,8 +118,63 @@ ROL - RedHat Online Learning - https://rol.redhat.com [RH login ID]
 	$ oc login -u admin -p redhatocp https://api.na.nokia.com:6443
 	$ oc login -u admin -p redhatocp https://api.apac.emea.com:6443
 
-	 
-	 
-	 
-	 
-	 
+
+- VMs/Servers details:-
+  workstation.lab.example.com   - Jump server (used for login to OCP cluster, oc and other required binaries already installed and available).
+  FYI - This node only in GUI (Linux OS - It can be any OS).
+  
+  bastion.lab.example.com - It act as router and connect "Student Network" to "Classroom Network".
+  
+  classroom.example.com   - It allow to connect to internet for access public/private registry/repo 
+  - redhat.access.com 
+  - registry.redhat.io 
+  - github.com 
+  - quay.io 
+  - etc 
+  
+  utility.lab.example.com - Main node which provide very imp services [DNS/HAproxy/DHCP/PXE/Apache/NFS-Server-for-StorageCLass etc]
+  
+  
+  master01.ocp4.example.com  [As per LAB-DO180 ; single node cluster].
+   - As per production:-
+     master01-03.ocp4.example.com 
+     worker01-0N.ocp4.example.com 
+     ON=100
+     OCP cluster - master + worker nodes only [worker -> storage/infra/custom/etc]
+  
+  - idm.ocp4.example.com  [LDAP server]
+  - registry.ocp4.example.com [Private registry server]
+    FYI- all images can be placed on registry server.
+	
+Custom LAB:- Task01
+- Login to Workstation via "Console"
+- Login to each VMs/Servers via student/root account and run below commands:-
+  $ ssh student@utility or ssh root@utility 
+  $ hostname -s 
+  $ hostname -d 
+  $ hostname -f 
+  $ whoami 
+  $ hostname -I (Get the IP address of the node).
+
+  NOte:  Check for bastion,workstation.
+  
+- from workstation node try to login to OCP luster.
+  $ oc login -u admin -p redhatocp https://api.ocp4.example.com:6443 
+  $ oc whoami 
+  $ oc get nodes
+  $ oc get clusterversion 
+  $ oc version 
+  
+
+###Point-04-) 
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
