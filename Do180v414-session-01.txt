@@ -165,8 +165,71 @@ Custom LAB:- Task01
   $ oc get clusterversion 
   $ oc version 
   
+###################################################################################
+-Unit-1-) Introduction to Kubernetes and OpenShift.
+- Containerization:-
+  via Container Engine (podman,docker,crio,conatinerd etc).
+  via Container Orchetration (Kubernetes etc).
+  
+ Why container required?
+ 
+Case-01: Deploy application on Physical Machine (Single PM).
+app01-Java based 
+app02-Python based 
+app03-PHP based 
+PM=server-pm-01 (RHEL9 OS).
 
-###Point-04-) 
+Case-02: Deploy application on Virtual Machine (VM).
+FYI- Required less PM.
+
+Case-03: Deploy application on Physical/Virtual Machine (PM/VM).
+FYI- Required less PM/VM.
+
+
+podman pull quay.io/cprakash2118/java-unzip-httpd-image
+podman run -d --name myapp -p 8080:80 quay.io/cprakash2118/java-unzip-httpd-image
+NOte: -
+8080 port on host (workstation)
+80 port on container (image level).
+name of container myapp 
+-d (detach option) 
+image - quay.io/cprakash2118/java-unzip-httpd-image
+
+
+Kubernetes:- 
+https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/
+https://kubernetes.io/docs/setup/production-environment/container-runtimes/
+
+Layer-06   End user applications(Banking/Telco etc)
+Layer-05   Add on services (Network;Storage;Minoting;logging etc)
+Layer-04   Install Certified Kubernetes (version 1.31)
+           kubelet;kube-apiserver;etcd;kube-controller-manager;kube-scheduler
+Layer-03   Install "Container RunTime" - Crio,Containerd, Docker, Mirantis COntainer RunTime
+            systemd service - crio 
+Layer-02   Installed Operating System (RHEL9).
+layer-01   hardware;Virtualization;Cloud [Infra]
+
+
+Red Hat OpenShift:-
+Layer-08   End user applications(Banking/Telco etc)
+Layer-07   Rd Hat openshift Platform Plus (RHOPP - Add-On service).
+Layer-06   Red Hat openshift Container Platform (RHOCP)
+--------------------------------------------------------------------------
+Note: End user application can be deployed on RHOKE/RHOCP/RHOPP 
+
+Layer-05   Red Hat openshift Kubernetes Engine (RHOKE)
+Layer-04   Install Certified Kubernetes (version 1.31) - by openshift-installer 
+           kubelet;kube-apiserver;etcd;kube-controller-manager;kube-scheduler
+		   OCP version 4.14 - k8s version 1.27 
+		   OCP version 4.15 - k8s version 1.28 
+
+Layer-03   Container RunTime (default=crio) - systemd service (running on all master/worker) - by openshift-installer
+Layer-02   Installed Operating System - RHEL core OS (Not manually installed; installed by openshift-installer".
+layer-01   hardware;Virtualization;Cloud [Infra]
+
+
+  
+  
   
   
   
