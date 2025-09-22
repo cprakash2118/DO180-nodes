@@ -167,11 +167,20 @@ Custom LAB:- Task01
   
 ###################################################################################
 -Unit-1-) Introduction to Kubernetes and OpenShift.
+  - Describe the main characteristics of containers and Kubernetes.
+  - Describe the relationship between OpenShift, Kubernetes, and other Open Source projects,and list key features of Red Hat OpenShift products and editions.
+  - Navigate the OpenShift web console to identify running applications and cluster services.
+  - Navigate the Events, Compute, and Observe panels of the OpenShift web console to assess the overall state of a cluster.
+
+
+
+***- Describe the main characteristics of containers and Kubernetes.
+
 - Containerization:-
   via Container Engine (podman,docker,crio,conatinerd etc).
   via Container Orchetration (Kubernetes etc).
   
- Why container required?
+- Why container required?
  
 Case-01: Deploy application on Physical Machine (Single PM).
 app01-Java based 
@@ -196,6 +205,7 @@ name of container myapp
 image - quay.io/cprakash2118/java-unzip-httpd-image
 
 
+- Kubernetes vs OpenShift 
 Kubernetes:- 
 https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/
 https://kubernetes.io/docs/setup/production-environment/container-runtimes/
@@ -228,8 +238,144 @@ Layer-02   Installed Operating System - RHEL core OS (Not manually installed; in
 layer-01   hardware;Virtualization;Cloud [Infra]
 
 
+Container = Images + Application  
+Images - w.r.t registry
+Application - w.r.t repository (github.com) 
+
+
+###  Kubernetes Architectural Concepts:-
+- master nodes [Where k8s/ocp services running]
+  FYI
+  - 3 node cluster (w.r.t master node/control plan).
+  - N worker nodes (End user applications/infra service running/deployed).
+  - k8s/ocp cluster mean [master + worker nodes]
+  - Container RunTime required in all nodes (master/worker) - Defult w.r.t OCP is cri-o 
+  - kubelet running in all the nodes (master/worker) - it's an agent which connect with kube-apiserver and pass all information about nodes/container/API.
+  - kubelet & crio both are systemd service.
+  **********************
+   ssh core@192.168.50.10 
+  **********************
+  - kube-apiserver; kube-controller-manager; etcd; kube-scheduler
+  - kubectl as a client to communicate with Kubernetes cluster 
+  
+- Create namespace (demo01)
+- Verify the current namespace
+- deploy application via kubernetes's resources (pod,deployment).
+
+$ oc login -u admin -p redhatocp https:api.ocp4.example.com:6443 
+$ oc whoami 
+$ oc new-project demo01 
+$ oc project -q 
+$ oc get all 
+
+vim pod.yaml 
+apiVersion: 
+kind:
+metadata:
+  name: name-anything  
+spec:
+  replicas: 3
+  selector:
+  template:
   
   
+  
+- Login to OCP cluster:-
+CLI method-
+$ oc login -u admin -p redhatocp https://api.ocp4.example.com:6443
+$ oc whoami 
+$ oc get nodes
+$ oc version 
+$ oc get clusterversion
+
+Web Console:-
+$ oc whoami --show-console 
+https://console-openshift-console.apps.ocp4.example.com
+https://appName-nsName.apps.cluserName.baseDomain 
+
+appName=console 
+nsName=openshift-console
+cluserName=ocp4
+baseDomain=example.com 
+
+---------------------------
+Monitor an OpenShift Cluster:-
+- ALl applications deployed on OCP cluster w.r.t namesapce only (openshift- ; kube- etc)
+- Created namespace - demo01 
+- Deploy application/DB w.r.t namespace
+
+$ oc whoami 
+$ oc project -q 
+
+$ oc new-project demo01 
+$ oc project -q 
+demo01 
+You will be by default in demo01 namespace
+
+or 
+$ oc create namespace demo02 
+$ oc project -q 
+You will not be defult in demo02 namespace
+$ oc project demo02 
+$ oc project -q 
+
+
+Login to OCP cluster using CLI (oc).
+$ oc login -u userName -p password API_URL 
+$ oc login -u admin -p redhatocp https://api.ocp4.example.com:6443 
+$ oc whoami 
+admin 
+$ oc whoami -t 
+laksjdklsajdlsakjlaksjlkj
+
+or 
+$ oc login --token=laksjdklsajdlsakjlaksjlkj --server=https://api.ocp4.example.com:6443 
+userName + password = token
+
+
+From web console, download the OpenShift-client for CLI interface.
+
+
+ curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+ 
+ curl -LO "https://dl.k8s.io/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl.sha256"
+
+Kubernetes/OCP resources:-
+- POD 
+- ReplicaSet  (rs - Used for replicate apps-pod accross nodes - Not with rolling update)
+- Deployment  (deploy -Used for replicate apps-pod accross nodes - with rolling update)
+- StatefulSet (Persistent Storage attached with Application).
+- DaemonSet   (It automatically replicate apps (pods) to all the nodes (master/worker).
+- Secret [ data via file/variable ; tls ; docker-registry] 
+- configmap (cm)
+- deploymentConfig 
+- replicationController 
+- cron jobs 
+- jobs 
+- HPA 
+- PDB 
+etc 
+
+Note: 
+ - DeploymentConfig & replicationController no more in use.
+ - DeploymentConfig is depricated and deployment only used.
+ - Deployment used replicaSet 
+ - DeploymentConfig use replicationController 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   
   
   
