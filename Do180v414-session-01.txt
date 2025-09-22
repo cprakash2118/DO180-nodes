@@ -1,0 +1,8 @@
+https://github.com/cprakash2118/DO180-nodes
+
+-Point-01-) Lab Access:-
+ROL - RedHat Online Learning - https://rol.redhat.com [RH login ID]
+- Click on "Join"
+- Click on "Resources" -> Click on "BookSelf" and access/download eBook w.r.t DO180v414
+- Click on "LAB" -> Access your lab.
+
