@@ -1,8 +1,48 @@
 https://github.com/cprakash2118/DO180-nodes
 
--Point-01-) Lab Access:-
+###Point-01-) Lab Access:-
 ROL - RedHat Online Learning - https://rol.redhat.com [RH login ID]
 - Click on "Join"
 - Click on "Resources" -> Click on "BookSelf" and access/download eBook w.r.t DO180v414
 - Click on "LAB" -> Access your lab.
+
+###Point-02-) Product Name:-
+- Red Hat OpenShift:-
+  https://www.redhat.com/en/technologies/cloud-computing/openshift
+  https://docs.redhat.com/en/documentation/openshift_container_platform/4.14/
+
+2.1-) Cloud services editions
+ - "Red Hat OpenShift" Service on AWS     [ROSA - Platform=AWS;POC=Amazon]
+ - Microsoft Azure "Red Hat OpenShift"    [ARO  - Platform=Azure;POC=Microsoft]
+ - "Red Hat OpenShift" Dedicated          [Dedicated - Platform=AWS/GCP;POC=RedHat]
+ - "Red Hat OpenShift" on IBM Cloud       [OCP-IBM   - Platform=IBM;POC=IBM]
+
+2.2-) Self-managed editions
+ - Red Hat OpenShift Kubernetes Engine     [Basic; RHOKE]
+ - Red Hat OpenShift Container Platform    [Standard; RHOCP]
+ - Red Hat OpenShift Platform Plus         [Add-ON Service; RHOPP]
+ - Red Hat OpenShift Virtualization Engine [Add-ON service; RHOV - kubeVirt]
+ 
+
+2.3-) Services & add-ons
+ - Red Hat OpenShift AI
+ - Red Hat OpenShift Lightspeed
+ - Red Hat OpenShift Virtualization  (kubeVirt)
+ - Red Hat Quay
+ - Red Hat Advanced Cluster Management for Kubernetes  (RHACM)
+ - Red Hat Advanced Cluster Security for Kubernetes    (RHACS)
+ - Red Hat Advanced Developer Suite 
+ - Red Hat OpenShift Consulting
+
+
+************** Reference Link for "MultiCloud Container Platform - Start " ************** 
+ https://reprints2.forrester.com/#/assets/2/431/RES178526/report https://reprint.forrester.com/reports/the-forrester-wavetm-multicloud-container-platforms-q3-2025-f3367e46/index.html
+ https://www.redhat.com/en/resources/openshift-skill-paths-datasheet
+ 
+************** Reference Link for "MultiCloud Container Platform - End " **************
+
+
+
+
+
 
