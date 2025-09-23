@@ -39,6 +39,80 @@ Task-05- Access via CLI.
  $ oc clusterversion 
  $ oc get co 
 etc 
+
+$ oc whoami --show-console
+https://console-openshift-console.apps.ocp4.example.com 
+
+FYI- 
+admin/redhatocp - cluster-admin access 
+developer/developer - Basic user access 
+
+=============
+Adding use to the OCP cluster and use for login.
+username=cp1/cp2 
+password=redhat 
+
+Step-1-) 
+Create Users (database - cat htpasswd-file).
+$ htpasswd -c -b -B htpasswd-file cp1 redhat
+$ htpasswd    -b -B htpasswd-file cp2 redhat
+
+Step-2) 
+Create secret service, to inject the information into the OCP cluster.
+$ oc create secret generic secret-name --from-file htpasswd=htpasswd-file -n openshift-config 
+$ oc get secret secret-name -n openshift-config
+$ oc get secret secret-name -n openshift-config -o yaml/json 
+
+Step-3) Update to Oauth file 
+************
+$ oc get pods -n openshift-authentication                [Application]
+$ oc get pods -n openshift-authentication-operator 
+$ watch oc get pods -n openshift-authentication
+FYI- Operator do all required changes/update on POD.
+***********
+$ oc get oauth/cluster -o yaml > oauth.yaml 
+$ vim oauth.yaml 
+
+Refer this - https://docs.redhat.com/en/documentation/openshift_container_platform/4.13/html/authentication_and_authorization/index
+
+https://docs.redhat.com/en/documentation/openshift_container_platform/4.13/pdf/authentication_and_authorization/OpenShift_Container_Platform-4.13-Authentication_and_authorization-en-US.pdf
+
+Search for "identityProvider" and append to current file.
+
+Note: DO all required changes on oauth.yaml 
+vim oath.yaml 
+
+....
+....
+spec:
+  identityProviders:
+  - name: my_identity_provider 
+    mappingMethod: claim 
+    type: HTPasswd
+    htpasswd:
+      fileData:
+        name: secret-name
+	
+:wq 
+$ oc apply -f oauth.yaml 
+$ watch oc get pods -n openshift-authentication
+
+$ oc login -u cp1 -p redhat https://api.ocp4.example.com:6443 
+$ oc login -u admin -p redhatocp https://api.ocp4.example.com:6443 
+
+
+$ oc get pods -n openshift-authentication
+$ oc get pods -n openshift-authentication-operation
+
+
+
+1 core = 1000m (m- mili core)
+
+core = socket * (core per Socket) * (Thread per core)
+i7 system - socket=1 ; core-per-socket=4 ; thread-per-code=2 (1 * 4 * 2 = 8)
+
+8 cores = 8000m 
+
  
 
 
