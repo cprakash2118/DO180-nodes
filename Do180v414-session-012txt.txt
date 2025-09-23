@@ -1,0 +1,46 @@
+### Quick Recap (10 mins):-
+- DO180v414 - Red Hat OpenShift Administration I - OPerating a production cluster.
+  Unit-1-) Introduction to Kubernetes & OpenShift.
+           - COntainerization ?
+		   - COntainerization via [container engine and Container Orchetration]
+		     Container Engine - podman,docker,crio,containerd,rocket etc 
+			 Container Orchetration - Kubernetes (k8s).
+		   - Container -> Images (registry- quay.io) + Application code (git repo)
+		   - Container - Images + container 
+		   - Container as using images so it's not depending on host packages.
+		   - k8s main architecture [master/worker]
+		   - Created [namespace -> deployed application via deployment -> access deployed application via route.
+		   - Login to OCP cluster using CLI/Web Console:-
+		     $ oc login -u admin -p redhatocp https://api.ocp4.example.com:6443 
+			 $ oc whoami --show-console 
+			 https://console-openshift-console.apps.ocp4.example.com 
+			 admin/redhatocp - cluster-admin access 
+			 developer/developer - Basic user.
+			 
+----------------------------------------------------------------------------------
+Lab-recap-session:-
+Task-01- Login to OpenShift/OCP cluster via Web Console
+         FYI- 
+           UserName=admin
+           Password=redhatocp  
+           API URL=https://api.ocp4.example.com:6443 
+Task-02- Create namespace using Web Console namespace=demo01-ns 
+Task-03- Deploy application using Web Console on same namespace.
+Task-04- Access the application via workstation.
+Task-05- Access via CLI.
+ $ oc project demo-1-ns 
+ $ oc project -q 
+ $ oc get pods 
+ $ oc get pods -o yaml/json 
+ $ oc get pods -o yaml > data.yaml
+ $ oc get deployment 
+ $ oc get replicaset
+ $ oc version 
+ $ oc clusterversion 
+ $ oc get co 
+etc 
+ 
+
+
+
+  
