@@ -94,6 +94,8 @@ spec:
         name: secret-name
 	
 :wq 
+For your information:- Append line 89 to 94 (Added block to add one more identity provider).
+
 $ oc apply -f oauth.yaml 
 $ watch oc get pods -n openshift-authentication
 
@@ -110,7 +112,6 @@ $ oc get pods -n openshift-authentication-operation
 
 core = socket * (core per Socket) * (Thread per core)
 i7 system - socket=1 ; core-per-socket=4 ; thread-per-code=2 (1 * 4 * 2 = 8)
-
 8 cores = 8000m 
 
  
