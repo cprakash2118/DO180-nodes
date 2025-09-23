@@ -114,8 +114,49 @@ core = socket * (core per Socket) * (Thread per core)
 i7 system - socket=1 ; core-per-socket=4 ; thread-per-code=2 (1 * 4 * 2 = 8)
 8 cores = 8000m 
 
- 
+#######################################################################################
+Unit-3-) Run Applications as Containers and Pods.
+
+$ oc new-project demo01  
+$ oc project -q 
+
+or 
+$ oc create namespace demo02
+$ oc create namespace demo03 --dry-run=client -o yaml > namespace.yaml 
 
 
 
-  
+$ oc run web-server --image registry.access.redhat.com/ubi8/httpd-24
+$ kubectl run web-server --image registry.access.redhat.com/ubi8/httpd-24
+
+apiVersion: v1 
+kind: 
+metadata:
+  name: name
+  namespace: naynamespace
+  labels:
+     app: myapp
+	 app-env: prod 
+spec: 
+
+
+oc run -it my-app --image registry.access.redhat.com/ubi9/ubi --command -- /bin/bash
+
+
+
+------------------------------------------------------------------
+registry.redhat.io -> Authentication required.
+registry.access.redhat.com -> Authentication not required.
+
+
+o https://catalog.redhat.com/software/containers/explore
+
+
+ FROM ubi8/ubi:8.3
+ MAINTAINER Your Name  <_youremail_>
+ LABEL description="A custom Apache container based on UBI 8"
+ RUN yum install -y httpd && \
+    yum clean all
+ EXPOSE 80
+ RUN echo "Hello from Containerfile" > /var/www/html/index.html
+ CMD ["httpd", "-D", "FOREGROUND"]
