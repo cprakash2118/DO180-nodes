@@ -88,13 +88,13 @@ Task-2
 - Move to this namespace and deploy 3 applications as per below input.
 - information:-
  
- image=https://quay.io/repository/cprakash2118/java-unzip-httpd-image
+ image=quay.io/cprakash2118/java-unzip-httpd-image
   appName=myapp01 
  
  image=quay.io/cprakash2118/ubi9-apache 
  appName=myapp02 
  
- Image=https://quay.io/repository/cprakash2118/mysql-rhel8-80
+ Image=quay.io/cprakash2118/mysql-rhel8-80
  appName=mydb01 
  
 - If any pod not getting started/up the what shoud be the appoach.
