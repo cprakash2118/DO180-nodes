@@ -158,13 +158,13 @@ Unit-4-) Deploy Managed and Networked Applications on Kubernetes:-
 10-pvc 
 11-namespace
 
-Image - registry.ocp4.example.com:8443/redhattraining/webphp:v1
+Image - registry.ocp4.example.com:8443/redhattraining/webphp:v2
 
 ## Imperative vs Declarative workflow:-
 - Imperative workflow:-
   $ oc new-project ns-project01 
   
-  $ oc run myapp --images registry.ocp4.example.com:8443/redhattraining/webphp:v1
+  $ oc run myapp --images registry.ocp4.example.com:8443/redhattraining/webphp:v2
   $ oc get pods 
   NOte: Only pod.
   
