@@ -171,8 +171,8 @@ Image - registry.ocp4.example.com:8443/redhattraining/webphp:v2
 
 
 - Declarative workflow:-
-  $ oc new-project ns-project01 --dry-run=client -o yaml > pod-ns.yaml  [This will not work]
-  $ oc create namespace ns-project01 --dry-run=client -o yaml > pod-ns-2.yaml 
+  $ oc new-project ns-project02 --dry-run=client -o yaml > pod-ns.yaml  [This will not work]
+  $ oc create namespace ns-project02 --dry-run=client -o yaml > pod-ns-2.yaml 
   
   $ oc run myapp2 --images image-url --dry-run=client -o yaml -n pod-project02 > pod-myapp2.yaml 
   $ vim pod-myapp.yaml 
