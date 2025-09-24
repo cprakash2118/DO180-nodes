@@ -150,7 +150,7 @@ Unit-4-) Deploy Managed and Networked Applications on Kubernetes:-
 2-ReplicaSet (rs)
 3-Deployment (deploy)
 4-DaemonSet 
-5-StatefulSet 
+5-StatefulSet           - Will discuss later (demo)
 6-ConfigMap (cm)
 7-Secret 
 8-service (svc)
@@ -210,3 +210,56 @@ oc explain pod | less
 oc explain pod.spec |less
 oc explain replicaset |less
 oc explain replicaset.spec |less 
+-----------------------------------------------------------------
+- Network Connectivity:- [oc get network -o yaml ]
+  NetworkType (CNI - Container Network Interface) 
+   - OVNKubernetes ( OCP version >= 4.12)
+   - OpenShiftSDN  ( OCP version < 4.12)
+   - pod network  (CIDR value range - 10.0)
+   - service network (CIDR value range - 172.)
+
+Task-02:-
+--------
+Deploy application using new-app option.
+$ oc new-project ns-task02 
+$ oc project -q 
+$ oc new-app --name myapp quay.io/cprakash2118/java-unzip-httpd-image
+$ oc get pods
+$ oc logs myapp-<tab>
+$ oc get replicaset 
+$ oc get deployment 
+$ oc get svc 
+
+Create service account and provide required privileage.
+$ oc create serviceaccount myapp-sa 
+$ oc adm policy add-scc-to-user privileage -z myapp-sa 
+$ oc get deployment 
+$ oc get deployment myapp -o yaml > myapp-deployment.yaml 
+$ vim myapp-deployment.yaml 
+update for 
+ 
+ - (w.r.t COntainer level) serviceAccountName: myapp-sa 
+ - (w.r.t SCC) runAsUser: 0 
+  
+$ oc apply -f myapp-deployment.yaml
+$ oc expose service myapp 
+$ oc get deployment.
+$ oc scale --replicas=3 deployment myapp 
+- Do changes on POD 
+- Verify all changes
+$ oc get route  
+$ curl http://route-name 
+
+
+
+
+
+
+Task-03:-
+Imperative & Declarative workflow:-
+- Create namespace 
+- Deploy application (quotes) - via Deployment -> replicaset -> pod  
+- Deploy Database (mysql):    - via Deployment -> replicaset -> pod 
+- Create Service (svc)              
+- Create Route to expose the service outside the OCP cluster.
+
