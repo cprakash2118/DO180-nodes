@@ -162,11 +162,13 @@ Image - registry.ocp4.example.com:8443/redhattraining/webphp:v1
 
 ## Imperative vs Declarative workflow:-
 - Imperative workflow:-
+  $ oc new-project ns-project01 
+  
   $ oc run myapp --images image-url 
   $ oc get pods 
   NOte: Only pod.
   
-  $ oc new-project ns-project01 
+
 
 - Declarative workflow:-
   $ oc new-project ns-project01 --dry-run=client -o yaml > pod-ns.yaml  [This will not work]
@@ -178,10 +180,11 @@ Image - registry.ocp4.example.com:8443/redhattraining/webphp:v1
   $ oc create -f pod-myapp.yaml 
 
 
-Data base deploymeny via commnad line and file (yaml).
-oc run mysql-server --image registry.ocp4.example.com:8443/rhel9/mysql-80:1-228  --from-literal MYSQL_USER=redhat --from-literal MYSQL_PASSWORD=redhat123 --from-literal MYSQL_DATABASE=world
+- Data base deploymeny via commnad line and file (yaml).
+  $ oc create namespace ns-project03 --dry-run=client -o yaml > pod-ns-3.yaml
+  $ oc run mysql-server --image registry.ocp4.example.com:8443/rhel9/mysql-80:1-228  --from-literal MYSQL_USER=redhat --from-literal MYSQL_PASSWORD=redhat123 --from-literal MYSQL_DATABASE=world 
 
 
-oc run mysql-server --image registry.ocp4.example.com:8443/rhel9/mysql-80:1-228  --from-literal MYSQL_USER=redhat --from-literal MYSQL_PASSWORD=redhat123 --from-literal MYSQL_DATABASE=world --dry-run=client -o yaml > mysql-pod.yaml 
+oc run mysql-server --image registry.ocp4.example.com:8443/rhel9/mysql-80:1-228  --from-literal MYSQL_USER=redhat --from-literal MYSQL_PASSWORD=redhat123 --from-literal MYSQL_DATABASE=world --dry-run=client -n ns-project03 -o yaml  > mysql-pod-p3.yaml 
 
 ----------------------------------------------------------------
