@@ -164,17 +164,25 @@ Image - registry.ocp4.example.com:8443/redhattraining/webphp:v2
 - Imperative workflow:-
   $ oc new-project ns-project01 
   
-  $ oc run myapp --images registry.ocp4.example.com:8443/redhattraining/webphp:v2
+  $ oc project -q 
+  $ oc get all 
+  
+  As of now login as admin (so that no permission issues).
+  $ oc run myapp --image registry.ocp4.example.com:8443/redhattraining/webphp:v2
   $ oc get pods 
   NOte: Only pod.
   
+  $ oc port-forward pod/myapp 8080:8080
+  $  curl 127.0.0.1:8080
+  or
+  $ curl 127.0.0.1:8080/index.php
 
 
 - Declarative workflow:-
   $ oc new-project ns-project02 --dry-run=client -o yaml > pod-ns.yaml  [This will not work]
   $ oc create namespace ns-project02 --dry-run=client -o yaml > pod-ns-2.yaml 
   
-  $ oc run myapp2 --images image-url --dry-run=client -o yaml -n pod-project02 > pod-myapp2.yaml 
+  $ oc run myapp2 --image registry.ocp4.example.com:8443/redhattraining/webphp:v2 --dry-run=client -o yaml -n ns-project02 > pod-myapp2.yaml 
   $ vim pod-myapp.yaml 
   $ oc create -f pod-ns-2.yaml
   $ oc create -f pod-myapp.yaml 
