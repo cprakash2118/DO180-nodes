@@ -1,0 +1,105 @@
+# Quick Recap:- (10-15 mins).
+- Unit-1-) Introduction to Kubernetes and OpenShift
+- Describe the main characteristics of containers and Kubernetes.
+-  Describe the relationship between OpenShift, Kubernetes, and other Open Source projects, and list key features of Red Hat OpenShift products and editions.
+
+- Unit-2-) 
+- Kubernetes & OpenShift CLI part.
+- Inspect kubernetes resources [POD,Service,Deployment etc ]
+- Access the health of kubernetes cluster.
+
+- Unit-3) Applications as Containers and Pods.  
+- Create Linux Containers and Kubernetes Pods (oc run command).
+- FInd and inspact container images.
+- Troubleshoot Containers and Pods
+
+  - Kubernetes vs OpenShift 
+  - Containerization (via Container Engine & Orchetration tool like k8s).
+  - OpenShift Login to cluster.
+    Web Console & CLI login.
+	 User/password [IdP=htpasswd;LDAP;OIDC;Active Directory etc]
+	 API Login - https://api.clusterName.baseDomain:6443
+	           - https://api.ocp4.example.com:6443 
+	 		   - $ oc login -u admin -p redhatocp https://api.ocp4.exmaple.com:6443 
+			   - After login verify the access and cluster details.
+			   - Use "oc" & "kubectl" via CLI login to cluster.  
+				 $ oc get nodes 
+				 $ oc version 
+				 $ oc get clusterversion 
+				 $ oc whoami 
+				 $ oc whoami -t 
+				 $ oc whoami --show-console 
+				 https://concole-openshift-console.apps.ocp4.example.com
+				 
+				 $ kubectl get nodes 
+				 $ kubectl get pods 
+				 $ kubectl get svc 
+				 $ kubectl get configmap 
+				 $ kubectl get secret 
+				 
+	Kubernetes:- POD - oc run , namespace create and deployed application on this same namespace.
+-----------------------------------------------
+- Login to OCP cluster as admin/cluster-admin via CLI/Web Console.
+- Create namespace (oc new-project, oc create namespace <>).
+- MOve to same namespace & verify .
+- Deploy POD via (oc run command). 
+- Operation w.r.t POD.
+Reference link - https://github.com/cprakash2118/DO180-nodes/blob/main/Do180v414-session-012txt.txt
+
+LAB Setup:-
+Task-1
+User creation via htpasswd:-
+- user1/redhat 
+- user2/redhat 
+- IdP Name= SRE-Team 
+
+Note: 
+
+$ oc get oauth/cluster -o yaml > oauth.yaml
+$ vim oauth.yaml 
+And update with correct syntax (YAML)
+$ oc apply -f oauth.yaml
+
+or
+*****************
+- Login to Web Console as cluster-admin.
+- Left hand side - Click on "Administration" - DropDown 
+- Then - Click on cluster settings.
+- Then - Click on "Configuration"
+- Then type on search BOX "oauth"
+- Then clock on Oauth 
+- Scroll Down and then click on add on "Identity Provider" section.
+- Name=SRE-Team
+- Browse and load "htpasswd" file 
+- Click on Add.
+******************
+$ oc get pods -n openshift-authentication
+$ oc login -u user1 -p redhat https://api.ocp4.example.com:6443 
+$ oc whoami -t
+$ oc get nodes 
+
+Do the same with user2 
+
+
+
+-------------
+Task-2
+- Create namespace ns-day03-part1 
+- Move to this namespace and deploy 3 applications as per below input.
+- information:-
+ 
+ image=https://quay.io/repository/cprakash2118/java-unzip-httpd-image
+  appName=myapp01 
+ 
+ image=quay.io/cprakash2118/ubi9-apache 
+ appName=myapp02 
+ 
+ Image=https://quay.io/repository/cprakash2118/mysql-rhel8-80
+ appName=mydb01 
+ 
+- If any pod not getting started/up the what shoud be the appoach.
+- Check the current load (CPU and Memory ulization).
+
+  
+	
+	
