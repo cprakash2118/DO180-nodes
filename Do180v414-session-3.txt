@@ -164,7 +164,7 @@ Image - registry.ocp4.example.com:8443/redhattraining/webphp:v1
 - Imperative workflow:-
   $ oc new-project ns-project01 
   
-  $ oc run myapp --images image-url 
+  $ oc run myapp --images registry.ocp4.example.com:8443/redhattraining/webphp:v1
   $ oc get pods 
   NOte: Only pod.
   
