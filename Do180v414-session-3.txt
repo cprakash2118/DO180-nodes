@@ -100,6 +100,82 @@ Task-2
 - If any pod not getting started/up the what shoud be the appoach.
 - Check the current load (CPU and Memory ulization).
 
+************************* Fix for the POD issue as of now ************************
+$ oc project ns-day03-part1
+$ oc project -q
+ns-day03-part1
+$ oc get pods
+$ oc logs myapp01
+$ oc logs myapp02
+$ oc logs mydb01
+
+Note: Permission issues, how to fix ?
+
+Solution- Create service account and provide priveliage 
+$ oc create serviceaccount myapp-sa 
+$ oc get serviceaccount 
+$ oc get scc 
+
+$ oc adm policy add-scc-to-user anyuid -z myapp-sa 
+
+$ oc set serviceaccount 
+*************************************************************************************************
+- Login to OCP cluster [Web COnsole & CLI]
+- Create kubernetes/OpenShift resources -
+  [namespace, pod, replicaset, deployment etc]
+  FYI- namespace also know as project.
+
+ $ oc run myapp --image image-url 
+ $ oc get pods 
+ NOte: Single pod created.
+ Get the image URL - oc get istag -n openshift | grep http 
+ 
+ 
+ $ oc run myapp --image httpd --dry-run=client -o yaml > myapp.yaml 
+ $ oc create -f myapp.yaml 
+ 
+ 
+***********************************************
+oc run mysql-server --image registry.ocp4.example.com:8443/rhel9/mysql-80:1228  --env MYSQL_USER=redhat --env MYSQL_PASSWORD=redhat123 --env MYSQL_DATABASE=world
+
+##################################################
+oc new-app --name mysql registry.ocp4.example.com:8443/rhel9/mysql-80:1228
+
+-------------------------------------------------------------------------------
+Unit-4-) Deploy Managed and Networked Applications on Kubernetes:-
+
+- Deploy application using kubernetes/openshift resources:-
+- kubernetes/OpenShift resources:-
+1-POD 
+2-ReplicaSet (rs)
+3-Deployment (deploy)
+4-DaemonSet 
+5-StatefulSet 
+6-ConfigMap (cm)
+7-Secret 
+8-service (svc)
+9-route
+10-pvc 
+11-namespace
+
+Image - registry.ocp4.example.com:8443/redhattraining/webphp:v1
+
+## Imperative vs Declarative workflow:-
+- Imperative workflow:-
+  $ oc run myapp --images image-url 
+  $ oc get pods 
+  NOte: Only pod.
   
-	
-	
+  $ oc new-project ns-project01 
+
+- Declarative workflow:-
+  $ oc new-project ns-project01 --dry-run=client -o yaml > pod-ns.yaml  [This will not work]
+  $ oc create namespace ns-project01 --dry-run=client -o yaml > pod-ns-2.yaml 
+  
+  $ oc run myapp2 --images image-url --dry-run=client -o yaml -n pod-project02 > pod-myapp2.yaml 
+  $ vim pod-myapp.yaml 
+  $ oc create -f pod-ns-2.yaml
+  $ oc create -f pod-myapp.yaml 
+
+
+----------------------------------------------------------------
