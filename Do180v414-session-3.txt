@@ -253,9 +253,6 @@ $ curl http://route-name
 ===============================================================
 
 
-
-
-
 Task-03:-
 Imperative & Declarative workflow:-
 - Create namespace 
@@ -264,3 +261,40 @@ Imperative & Declarative workflow:-
 - Create Service (svc)              
 - Create Route to expose the service outside the OCP cluster.
 
+#####################################################################################
+Imperative workflow:-
+
+-1-) Create Namespace 
+$ oc new-project ns-db-app-example
+$ oc project -q
+
+-2-) Create secret for database:-
+$ oc get secret 
+$ oc create secret generic mysql --from-literal user=myuser --from-literal password=redhat123 --from-literal database=test_secrets --from-literal hostname=mysql
+$ oc get secret 
+$ oc get secret mysql 
+
+
+-3-) Deploy Database (mysql)
+$ oc new-app --name mysql quay.io/cprakash2118/rhel8-mysql-80
+$ oc get pods 
+ 
+-4-) Deploy secret to database pod via deployment.  
+$ oc set env deployment/mysql --from secret/mysql --prefix MYSQL_
+
+ 
+-5-) Deploy application "qotes"
+$ oc new-app --name quotes  quay.io/cprakash2118/famous-quotes
+$ oc get pods
+$ oc logs <podname>
+
+-6-) Deploy secret to application pod via deployment.  
+$ oc set env deployment/quotes --from secret/mysql --prefix QUOTES_  
+
+$ oc expose service quotes 
+$ oc get route 
+
+
+
+----------
+Declarative workflow:-
