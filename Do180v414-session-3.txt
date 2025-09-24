@@ -178,4 +178,10 @@ Image - registry.ocp4.example.com:8443/redhattraining/webphp:v1
   $ oc create -f pod-myapp.yaml 
 
 
+Data base deploymeny via commnad line and file (yaml).
+oc run mysql-server --image registry.ocp4.example.com:8443/rhel9/mysql-80:1-228  --from-literal MYSQL_USER=redhat --from-literal MYSQL_PASSWORD=redhat123 --from-literal MYSQL_DATABASE=world
+
+
+oc run mysql-server --image registry.ocp4.example.com:8443/rhel9/mysql-80:1-228  --from-literal MYSQL_USER=redhat --from-literal MYSQL_PASSWORD=redhat123 --from-literal MYSQL_DATABASE=world --dry-run=client -o yaml > mysql-pod.yaml 
+
 ----------------------------------------------------------------
