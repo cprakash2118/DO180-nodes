@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    run: myapp2
+  name: myapp2
+  namespace: ns-project02
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      run: myapp2
+  template:
+    metadata:
+      labels:
+        run: myapp2
+      name: myapp2
+    spec:
+      containers:
+      - image: registry.ocp4.example.com:8443/redhattraining/webphp:v2
+        name: myapp2
+        resources: {}
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+
