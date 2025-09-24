@@ -233,6 +233,7 @@ $ oc get svc
 Create service account and provide required privileage.
 $ oc create serviceaccount myapp-sa 
 $ oc adm policy add-scc-to-user privileage -z myapp-sa 
+$ oc adm policy add-scc-to-user anyuid -z myapp-sa 
 $ oc get deployment 
 $ oc get deployment myapp -o yaml > myapp-deployment.yaml 
 $ vim myapp-deployment.yaml 
@@ -249,7 +250,7 @@ $ oc scale --replicas=3 deployment myapp
 - Verify all changes
 $ oc get route  
 $ curl http://route-name 
-
+===============================================================
 
 
 
