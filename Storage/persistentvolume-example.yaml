@@ -1,0 +1,15 @@
+﻿apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: myapp-pv
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  volumeMode: Filesystem
+  storageClassName: nfs-storage
+  nfs:
+    path: /exports-ocp4
+    server: 192.168.50.254

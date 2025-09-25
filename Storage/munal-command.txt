@@ -1,0 +1,6 @@
+Deploy secret to database pod via deployment.  
+$ oc set env deployment/mysql --from secret/mysql --prefix MYSQL_
+
+Deploy secret to application pod via deployment.  
+$ oc set env deployment/myapp --from secret/mysql --prefix QUOTES_ 
+
