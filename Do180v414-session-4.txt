@@ -1,0 +1,138 @@
+# Quick Recap:-
+- New application deplyed.
+  $ oc run 
+   single pod create as a k8s resource.
+  
+  $ oc new-app 
+    pod, service, replicaset, deployment.
+	$ oc new-app --name myapp httpd:latest 
+	$ oc get pods 
+	$ oc get svc or oc get service 
+	$ oc get replicaset
+	$ oc get deployment
+	
+	FYI- If you replace "oc" with "kubectl" - It gives you same outcome.
+
+    $ oc expose service serviceName
+	$ oc get route 
+	
+*******************************
+By Default using new-app option.
+oc new-app --name myapp01 httpd
+
+ON POD:-
+labels:
+  deployment: myapp01
+
+ON Deployment:-
+Selector: 
+ MatchLabels:
+   deployment: myapp01
+   
+ON Service:-
+selector:
+  deployment: myapp01
+	
+
+-----------------------------------------------------------------
+- Network Connectivity:- [oc get network -o yaml ]
+  NetworkType (CNI - Container Network Interface) 
+   - OVNKubernetes ( OCP version >= 4.12)
+   - OpenShiftSDN  ( OCP version < 4.12)
+   - pod network  (CIDR value range - 10.0)
+   - service network (CIDR value range - 172.)
+
+Task-02:-
+--------
+Deploy application using new-app option.
+$ oc new-project ns-task02 
+$ oc project -q 
+$ oc new-app --name myapp quay.io/cprakash2118/java-unzip-httpd-image
+$ oc get pods
+$ oc logs myapp-<tab>
+$ oc get replicaset 
+$ oc get deployment 
+$ oc get svc 
+
+Create service account and provide required privileage.
+$ oc create serviceaccount myapp-sa 
+$ oc adm policy add-scc-to-user privileage -z myapp-sa 
+$ oc adm policy add-scc-to-user anyuid -z myapp-sa 
+$ oc get deployment 
+$ oc get deployment myapp -o yaml > myapp-deployment.yaml 
+$ vim myapp-deployment.yaml 
+update for 
+ 
+ - (w.r.t COntainer level) serviceAccountName: myapp-sa 
+ - (w.r.t SCC) runAsUser: 0 
+  
+$ oc apply -f myapp-deployment.yaml
+$ oc expose service myapp 
+$ oc get deployment.
+$ oc scale --replicas=3 deployment myapp 
+- Do changes on POD 
+- Verify all changes
+$ oc get route  
+$ curl http://route-name 
+===============================================================
+
+
+Task-03:-
+Imperative & Declarative workflow:-
+- Create namespace 
+- Deploy application (quotes) - via Deployment -> replicaset -> pod  
+- Deploy Database (mysql):    - via Deployment -> replicaset -> pod 
+- Create Service (svc)              
+- Create Route to expose the service outside the OCP cluster.
+
+#####################################################################################
+Imperative workflow:-
+
+-1-) Create Namespace 
+$ oc new-project ns-db-app-example
+$ oc project -q
+
+-2-) Create secret for database:-
+$ oc get secret 
+$ oc create secret generic mysql --from-literal user=myuser --from-literal password=redhat123 --from-literal database=test_secrets --from-literal hostname=mysql
+$ oc get secret 
+$ oc get secret mysql 
+
+
+-3-) Deploy Database (mysql)
+$ oc new-app --name mysql quay.io/cprakash2118/rhel8-mysql-80
+$ oc get pods 
+ 
+-4-) Deploy secret to database pod via deployment.  
+$ oc set env deployment/mysql --from secret/mysql --prefix MYSQL_
+
+ 
+-5-) Deploy application "qotes"
+$ oc new-app --name quotes  quay.io/cprakash2118/famous-quotes
+$ oc get pods
+$ oc logs <podname>
+
+-6-) Deploy secret to application pod via deployment.  
+$ oc set env deployment/quotes --from secret/mysql --prefix QUOTES_  
+
+$ oc expose service quotes 
+$ oc get route 
+
+
+
+----------
+Declarative workflow:-
+
+ oc expose deployment/deploymentName --type=LoadBalancer --target-port=80
+ oc expose deployment/deploymentName --type=LoadBalancer --target-port=80 --dry-run=client -o yaml > svc-mysql.yaml 
+ 
+ Example:-
+  oc expose deployment/mysql --type=ClusterIP --target-port=3306 --dry-run=client -o yaml > svc-mysql.yaml
+  oc expose deployment/quotes --type=ClusterIP --target-port=8080 --dry-run=client -o yaml > svc-mysql.yaml
+ 
+ 
+ serviceType:-
+ 1- ClusterIP - It required route to access deployed application oc OCP cluster.
+ 2- LoadBalancer - It required LB to get the external IP (Like MetalLB) to provides access to deployed application oc OCP cluster.
+ 3- NodePort - With the help of node IP and respective node port - application can be exposed to outside OCP cluster.
+ 
