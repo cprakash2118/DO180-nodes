@@ -136,3 +136,148 @@ Declarative workflow:-
  2- LoadBalancer - It required LB to get the external IP (Like MetalLB) to provides access to deployed application oc OCP cluster.
  3- NodePort - With the help of node IP and respective node port - application can be exposed to outside OCP cluster.
  
+#########################
+Template:-
+All kubenetes/OCP resources - COnsider as "Object"
+Parameters 
+
+
+oc new-app --name db-image -l team=blue --image registry.ocp4.example.com:8443/rhel9/mysql-80:1 -e MYSQL_USER=developer  -e MYSQL_PASSWORD=developer -e MYSQL_ROOT_PASSWORD=redhat
+
+
+
+ oc create job date-job --image registry.access.redhat.com/ubi8/ubi  -- /bin/bash -c "date"
+ 
+  oc create cronjob date-cronjob  --image registry.access.redhat.com/ubi8/ubi  --schedule "*/1 * * * *"  -- date
+
+
+  oc create cronjob date-cronjob  --image registry.access.redhat.com/ubi8/ubi  --schedule "*/1 * * * *"  -- date --dry-run=client -o yaml > cronjobs.yaml   
+  
+  
+  oc create deployment my-deployment --image registry.access.redhat.com/ubi8/ubi  --replicas 3 --dry-run=client -o yaml > deployment-manifest.yaml  
+  
+#########################
+Kubernetes/OCP resources w.r.t Storage:-
+- pv 
+- pvc
+- sc
+- vs
+- vsc 
+
+pv/pvc w.r.t Deployment/StatefulSet.
+
+As per DO180v414 labs:-
+NFS server = 192.168.50.254/24 
+Path=/exports-ocp4
+MountPath=/var/lib/mysql/
+
+ssh root@utility 
+# cat /etc/exports
+
+# hostname -I 
+192.168.50.254 (NFS server IP)
+
+1- StorageClass (sc).
+$ oc get sc
+
+Storage:-
+Block :- RedWriteOnce, ReadWriteMany 
+File System:- ReadWriteMany
+
+2- Create PV
+3- Create PVC 
+4- Create deployment for mysql and Mount PVC via MountPath
+5- Create deployment for for application 
+
+-------------
+LAB - 
+$ oc new-project ns-storage 
+$ oc project -q 
+- Create PV
+$ oc apply -f persistentvolume-example.yaml
+$ oc get pv 
+Cluster Level
+
+- Create PVC
+$ oc apply -f persistentvolumeclaim-example.yaml
+$ oc get pvc 
+FYI - PVC on project/namespace level.
+
+- Create secret 
+$ oc apply -f mysecret.yaml
+
+- Create deployment (DB=mysql).
+$ oc apply -f deployment-mysql.yaml
+$ oc gte pods (it will fail).
+$ cat munal-command.txt
+$ oc set env deployment/mysql --from secret/mysql --prefix MYSQL_
+$ oc get pods
+$ oc apply -f service-mysql.yaml
+
+- Create application (app=myapp).
+$ oc apply -f deployment-quotes.yaml
+$ oc gte pods (it will fail).
+$ cat munal-command.txt
+$ oc set env deployment/myapp --from secret/mysql --prefix QUOTES_
+$ oc get pods
+$ oc apply -f service-myapp.yaml
+$ oc expose service myapp 
+$ oc get route 
+
+DOme changes on your Databases;
+
+oc rsh mysql<tab>
+$ mysql -umyuser -predhat123 ;
+> show databases;
+> use <db-name>;
+> show tables;
+> select * from table-name;
+> insert into table-name(my,message) values(9,'Nay name');
+> select * from table-name;
+> exit
+$exit
+
+$ oc delete pod mysql<tab>
+It will restart db (data is presistent as we have mounted PVC).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+ 
+
+
+
+
+
+
+
+  
+  
+ 
+ 
+ 
+
+
+
+
+
