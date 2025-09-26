@@ -1,0 +1,164 @@
+#Unit-5-)  Manage Storage for Application Configuration and Data.
+- Kubernetes resources:-
+  - POD (po)
+  - ReplicaSet (rs)
+  - Deployment (deploy)
+  - ReplicationController (rc) 
+  - DeploymentCOnfig (dc)
+  - StorageClass (sc)
+  - Persistent Volume (pv) - Cluster Level 
+  - Persistent Volume Claim (pvc) - Namespace level
+  - secret (types- generic/tls/docker-registry)
+    FYI- generic secret - --from-file (data on file) ; --from-literal (key/value)
+  - configMap (cm) 
+    FYI- Configuration part --from-file (data on file) ; --from-literal (key/value)
+	
+  How configMap/Secret use w.r.t application/DB (via POD,Deploy,dc,statefulset)
+  
+  $ oc create secret generic secretname --from-file filename.txt/yaml/json -n namespace 
+  $ oc create secret generic secretname --from-literal key1=value1 --from-literal key2=value2 -n namespace
+  $ oc get secret secretname -n namespace
+  $ oc get secret secretname -n namespace -o yaml/json 
+  $ oc get secret secretname -n namespace -o yaml > mysecret.yaml 
+  $ oc get secret secretname -n namespace --dry-run=client -o yaml > mysecret-2.yaml 
+  
+  w.r.t file 
+  $ oc set data --from-secret=secretname --from-file    filename.txt -n namespace
+  w.r.t variable 
+  $ oc set env --from-secret=secretname deployment/deploymentName -n namespace
+  $ oc set volume deployment/demo  --add --type secret  --secret-name demo-secret --mount-path /opt/app-secrets 
+  
+  $ oc extract secret/secret-name -n namespace --to=.  [It will download the secret)
+  $ oc extract secret/secret-name -n namespace --to=-  [Display]
+  
+  $ oc create configmap configMapName --from-file file2.txt -n namespace
+  $ oc create cm cmName --from-literal x=10 --from-literal name=do180 
+  
+  Note: Operation point of view - the way using secret commands same applicable for configmap.
+  
+----------------------
+Block Storage : PVC (App using via CSI) 
+file Storage  : PVC (App using via CSI)
+Object Storage: OBC (App using via S3 API )
+
+Access Mode :-
+RWO - Block
+RWX - file/Block/Object 
+ROX - Object/File 
+
+
+Static/Dynamic StorageClass 
+
+ActualStorgae -> StorageClass -> PV -> PVC -> Deployment/dc/StateSet  (Static StorageClass)
+ActualStorgae -> StorageClass -> PVC (PV automatically created once pvc created) -> Deployment/dc/StateSet  (Dynamic StorageClass).
+
+$ oc get storageclass or oc get sc
+- Create pvc 
+- use PVC to any application/DB 
+
+PVC w.r.t specific namespace 
+
+----------------
+Workload -> pod, replicaset, deployment, dc, rc, now we have "statefulset".
+podName:-
+via pod - mysql 
+via replicaset 
+ rsName- mysql-8912jsbd 
+ 
+via deployment 
+- mysql-8912jsbd-98723j
+- mysql-8912jsbd-987276
+
+mysql-1
+mysql-2
+mysql-3
+
+
+- Deplyed application attached PVC=1Gi (via Deployment)
+  Replicate pod - 3 pods - (PVC=1Gi)
+  StorageSize=1Gi 
+  
+- Deplyed application attached PVC=1Gi (via Deployment)
+  Replicate pod - 3 pods - (PVC=1Gi) * 3 
+  StorageSize=3Gi 
+  
+################
+-Unit-6-) Configure Applications for Reliability
+- Health check:-
+   - liveness Probes 
+   - readiness probes 
+FYI- Health check defined in a POD's spec to monitor the state of containers.
+
+Liveness Probe:-
+- Check if the container is alive (running correctly).
+  - Failing-> OpenShift restars the conatiner.
+Use:
+  - Detect application deadlocks or hangs where the process is running (conatiner is running) but not functioning.
+  - Example:- Web server thread is stuck and never responds (OpenShift Web COnsole).
+
+Common Prob Type:-
+ - HTTP GET - Hit an endpoints (eg:- /healthz) and expect 2xx/3xx 
+ - Command- Run a command inside the container (eg: cat /tmp/healthy).
+ - TCP socket- Check if a TCP port is accpeting connection.
+ 
+ livenessProbe:
+   httpGet:
+     path: /healthz
+	 port: 8080
+   initialDelaySeconds: 15 
+   periodSecount: 20 
+
+Readiness Probe:-
+Check the container is ready to serve request.
+
+  Minimum- 6 POD 
+  Maximum- 9 POD 
+  
+  When condition true 
+  
+---------------
+Reserve Compute Capacity for Applications:-
+
+- POd placement 
+  step-1-) k8s refer 
+   - CPU utilization (low CPU utilization, high priority for pod placement)
+   - Memory utilization (Low memory utilization, high priority for pod placement)
+   - Disk Pressure (Realted to storage space - Low memory utilization, high priority for pod placement)
+   - Port availibility ( more ports are availibility, high priority for pod placement)
+   - Taint-toleration, label-selector etc 
+   - afinity/anti-afinity rules.
+  
+  Step-2-) k8s algo give number based on above points 
+  
+  Step-3-) higest number node having top priority for pod placement.
+  
+
+- Capacity w.r.t nodes (CPU,Memory)
+  CPU calculation:-
+  CPU = socket * (core per socket) * (Thread per core).
+  
+  i7 laptop/system - 1 socket, 4 cores, each core 2 threads 
+                   = 1 * 4 * 2 
+				   = 8 CPU or 8 core 
+				   
+				   8 core = 8 
+                   8 core = 8000m (mini core) - Use this unit.
+				  
+    Memory =>
+    - 1Gi = 1024Mi (Must be use) 
+	- 1G  = 1000M 
+	
+	spec:
+	  conatiners:
+	  
+	  resources:
+	     limits:
+		    cpu: 500m 
+			memory: 512Mi 
+	     requests:
+		    cpu: 200m 
+			memory: 2050Mi 
+###################################
+Unit-7-)  Manage Application Updates:-
+oc patch configs.imageregistry.operator.openshift.io/cluster --type merge -p   '{"spec":{"defaultRoute":true}}'
+
